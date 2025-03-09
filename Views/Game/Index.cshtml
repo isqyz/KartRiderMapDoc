@@ -1,0 +1,52 @@
+﻿@model ShowViewModel
+@{
+    ViewBag.Title = "玩家成绩统计";
+    List<Track> tracks = Model.Tracks.ToList();
+
+}
+
+<h2>玩家成绩统计</h2>
+
+<form method="get" action="@Url.Action("Index", "Game")">
+    <div>
+        <h4>选择赛道</h4>
+        @foreach (var track in tracks)
+        {
+            <label>
+                <input type="checkbox" name="selectedTracks" value="@track.TrackName"
+                @(tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)) ? "checked" : "") />
+                @track.TrackName
+            </label>
+        }
+    </div>
+    <button type="submit">筛选</button>
+</form>
+@* 
+@if (!Model)
+{
+    <p>没有找到匹配的玩家数据。</p>
+} *@
+else
+{
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>玩家名</th>
+                <th>赛道</th>
+                <th>成绩</th>
+                <th>等级</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model.PlayerScores)
+            {
+                <tr>
+                    <td>@player.PlayerName</td>
+                    <td>@player.TrackName</td>
+                    <td>@player.Score</td>
+                    <td>@player.Level</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
