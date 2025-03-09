@@ -12,6 +12,7 @@ namespace KartRiderMapDoc.Controllers
         private static List<Player> Scores = new List<Player>();
         // GET: GameStatsApp
 
+        private static List<PlayerScore> players = new List<PlayerScore>();
 
         private static List<string> tracks = new List<string> { "Track A", "Track B", "Track C" };
 
