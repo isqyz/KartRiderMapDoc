@@ -1,20 +1,13 @@
 ﻿using KartRiderMapDoc.Models;
 using KartRiderMapDoc.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KartRiderMapDoc.Controllers
 {
     public class GameController : Controller
     {
         private readonly GameService gameService;
-
-
-        private static List<Player> Scores = new List<Player>();
-        // GET: GameStatsApp
-
-        private static List<PlayerScore> players = new List<PlayerScore>();
-
-        private static List<string> tracks = new List<string> { "Track A", "Track B", "Track C" };
 
         public GameController(GameService gameService)
         {
@@ -66,5 +59,15 @@ namespace KartRiderMapDoc.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        public IActionResult Create(Track track)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index"); // 添加成功后跳转到列表页
+            }
+            return View(track);
+        }
+
     }
 }
