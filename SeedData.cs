@@ -1,4 +1,5 @@
 ﻿using KartRiderMapDoc.Db;
+using KartRiderMapDoc.Models;
 
 namespace KartRiderMapDoc
 {
@@ -18,12 +19,22 @@ namespace KartRiderMapDoc
                 );
                 context.SaveChanges();
             }
+            if (!context.TrackScoreMarks.Any())
+            {
+
+            }
             if (!context.PlayerScores.Any())
             {
                 context.PlayerScores.AddRange
                     (
-                    new Models.Player {  Level = Models.ScoreLev.一线 , PlayerName = "富贵", Score = 91.60, TrackName = "城镇高速公路"  },
-                    new Models.Player {  Level = Models.ScoreLev.娱乐 , PlayerName = "土炮", Score = 98.60, TrackName = "城镇高速公路"  }
+                    new Models.Player { Level = Models.ScoreLev.娱乐, PlayerName = "土炮", Score = 98.60, TrackName = "城镇高速公路" },
+                    new Models.Player
+                    {
+                        Level = Models.ScoreLev.一线,
+                        PlayerName = "富贵",
+                        Score = 91.60,
+                        TrackName = "城镇高速公路",
+                    }
                 );
                 context.SaveChanges();
             }

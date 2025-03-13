@@ -9,7 +9,7 @@
         public ScoreLev Level { get; set; }
         public string? TrackName { get; set; }
         //玩家赛道记录
-        public ICollection<TrackScoreMark>? TrackScores { get; set; }
-        public ICollection<PlayerTrackAchievement>? PlayerTrackAchievements { get; set; }
+        public ICollection<TrackScoreMark> TrackScores { get; set; } = [];
+        public ICollection<PlayerTrackAchievement> PlayerTrackAchievements { get; set; } = [];
     }
 }
