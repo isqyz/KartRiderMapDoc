@@ -13,19 +13,25 @@
         @foreach (var track in tracks)
         {
             <label>
-                <input type="checkbox" name="selectedTracks" value="@track.TrackName"
-                @(tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)) ? "checked" : "") />
+                @if(tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)))
+                {
+                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" checked />
+                }
+                else
+                {
+                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" />
+                }
                 @track.TrackName
             </label>
         }
     </div>
     <button type="submit">筛选</button>
 </form>
-@* 
-@if (!Model)
+
+@if (Model is null)
 {
     <p>没有找到匹配的玩家数据。</p>
-} *@
+}
 else
 {
     <table border="1" cellpadding="5" cellspacing="0">

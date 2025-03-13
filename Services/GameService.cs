@@ -1,7 +1,5 @@
 ﻿using KartRiderMapDoc.Db;
-using KartRiderMapDoc.Migrations;
 using KartRiderMapDoc.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace KartRiderMapDoc.Services
 {
@@ -21,8 +19,8 @@ namespace KartRiderMapDoc.Services
         {
             _context.PlayerScores.Add(player);
             return _context.SaveChanges();
-            dotnet ef database update
-                dotnet ef migrations add InitialCreated
+            //dotnet ef database update
+                //dotnet ef migrations add InitialCreated
         }
     }
 }
