@@ -1,7 +1,7 @@
 ﻿@model ShowViewModel
 @{
     ViewBag.Title = "玩家成绩统计";
-    List<Track> tracks = Model.Tracks.ToList();
+    IEnumerable<Track> tracks = Model.Tracks;
 }
 
 <h2>玩家成绩统计</h2>
@@ -33,6 +33,33 @@
 }
 else
 {
+    @foreach (var track in @Model.Tracks)
+    {
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>玩家名</th>
+                    <th>@track.TrackName</th>
+                    <th>成绩</th>
+                    <th>等级</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Player player in Model.Players)
+                {
+                    if (player.TrackScores.Select(val=>val.PlayerId).Contains(track.Id))
+                    {
+                        <tr>
+                            <td>@player.PlayerName</td>
+                            <td>@track.TrackName</td>
+                            <td>@player.Score</td>
+                            <td>@player.Level</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
@@ -43,11 +70,11 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var player in Model.PlayerScores)
+            @foreach (var player in Model.Players)
             {
                 <tr>
                     <td>@player.PlayerName</td>
-                    <td>@player.TrackName</td>
+                    <td>TrackName</td>
                     <td>@player.Score</td>
                     <td>@player.Level</td>
                 </tr>
