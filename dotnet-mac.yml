@@ -1,0 +1,17 @@
+name: Test on macOS
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-latest  # 运行在 macOS
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'  # 你的 .NET 版本
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Test
+        run: dotnet test --configuration Release
