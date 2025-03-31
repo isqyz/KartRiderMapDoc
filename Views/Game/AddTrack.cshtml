@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "添加赛道";
     Track track = @Model.Item2;
-    IEnumerable<Track> Tracks = @Model.Item1;
+    var Tracks = @Model.Item1;
 }
 <h2>@ViewData["Title"]</h2>
 <table class="table table-bordered">
@@ -47,8 +47,11 @@
         <input asp-for="@track.Star" class="form-control" type="number" />
         <span asp-validation-for="@track.Star" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">提交</button>
+    <span>
+        <partial>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </partial>
+    </span>
 </form>
 
 <div>

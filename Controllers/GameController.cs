@@ -1,9 +1,6 @@
 ﻿using KartRiderMapDoc.Models;
 using KartRiderMapDoc.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Numerics;
 
 namespace KartRiderMapDoc.Controllers
 {
@@ -25,31 +22,53 @@ namespace KartRiderMapDoc.Controllers
         public IActionResult Index(List<string> selectedTracks)
         {
             // 获取所有赛道
-            ViewBag.AllTracks = gameService.GetAllTrack();
   
             // 选中赛道，如果未选择则展示全部
-            ViewBag.SelectedTracks = selectedTracks;
-            //var filteredPlayers = gameService.GetAllPlayerScores()
-            //    .Where(p => selectedTracks.Count == 0 || selectedTracks.Contains(p.TrackName??""))
-            //    .OrderByDescending(p => p.Score);
-            ShowViewModel showView = new()
+            //var filteredPlayers = gameService.GetAllPlayer()
+            //    .Where(players => selectedTracks.Count == 0 || selectedTracks.Contains(players.TrackName??""))
+            //    .OrderByDescending(players => players.Score);
+            ShowViewModel showView = new();
+
+            var tracks = gameService.GetAllTrack();
+            List<ShowViewModel> showViewModel = [];
+            foreach (var t in tracks)
             {
-                Tracks = gameService.GetAllTrack().Where(p=> selectedTracks.Count == 0 || selectedTracks.Contains(p.TrackName??"")),
-                PlayerScores = gameService.GetAllPlayerScores().Where(val=>val.TrackScores is not null && val.TrackScores.Count>0)
-            };
+                if(t.TrackScores is not null)
+                foreach(var mark in t.TrackScores)
+                {
+                    if(mark.Track is not null && mark.Player is not null)
+                        if (selectedTracks.Count == 0 || selectedTracks.Contains(mark.Track.TrackName))
+                        {
+                                var mod = new ShowViewModel() { TrackName = t.TrackName };
+                                mod.PlayerNames.Add(mark.Player.PlayerName);
+                                mod.TrackName = t.TrackName;
+                                mod.Scores.Add(mark.ReadScore());
+                                //mod.Levs.Add(mark.Score);
+                                showViewModel.Add(mod);
+                        }
+                }
+
+            }
             return View(showView);
         }
 
-        public IActionResult Manage()
+        public IActionResult Update()
         {
-            return View((play:new Player(), Tracks:gameService.GetAllTrack()));
+            var dto = new
+            {
+                player = new Player(),
+                mark = new TrackScoreMark(),
+                players = gameService.GetAllPlayer(),
+                tracks = gameService.GetAllTrack()
+            };
+            return View(dto);
         }
 
         [HttpPost]
-        public IActionResult AddOrUpdate(Player player)
+        public IActionResult AddOrUpdate(string playerName, string score, int trackId)
         {
-            gameService.AddPlayer(player);
-            return RedirectToAction("Index");
+            gameService.AddPlayer(playerName,score,trackId);
+            return RedirectToAction("Update");
         }
         [HttpPost]
         public IActionResult Create(Track track)

@@ -5,17 +5,36 @@ namespace KartRiderMapDoc.Models
 {
     public class TrackScoreMark
     {
-        [Key]
-        public int Id { get; set; }  // 可以用复合键（见方案 2），这里简单化
-
+        [Key, Column(Order = 0)]
         [ForeignKey("Player")]
-        public int PlayerId { get; set; }  // 选手外键
+        public int PlayerId { get; set; }
 
+        [Key, Column(Order = 1)]
         [ForeignKey("Track")]
-        public int TrackId { get; set; }  // 赛道外键
+        public int TrackId { get; set; }
 
         public double Score { get; set; }  // 选手在该赛道的分数
 
+        public string ReadScore()
+        {
+            TimeSpan ts = TimeSpan.FromSeconds(Score);
+            int minutes = (int)(Score / 60);
+            int seconds = ts.Seconds;       
+            int milliseconds = ts.Milliseconds; 
+
+            return $"{minutes}:{seconds}:{milliseconds}";
+        }
+
+        public void WriteScore(string score)
+        {
+            var spl = score.Split(':');
+            if (spl.Length == 3)
+            {
+                Score += (double.Parse(spl[0]) * 60);
+                Score += (double.Parse(spl[1]));
+                Score += (double.Parse(spl[2])) / 1000;
+            }
+        }
         // 导航属性
         public Player? Player { get; set; }
         public Track? Track { get; set; }

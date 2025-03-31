@@ -1,30 +1,40 @@
-﻿@model (Player,IEnumerable<Track>)
+﻿@model dynamic
 @{
     ViewBag.Title = "玩家成绩管理";
-    Player player = @Model.Item1;
-    IEnumerable<Track> Tracks = @Model.Item2;
+    var Tracks = @Model.tracks;
+    Player player = @Model.player;
+    TrackScoreMark mark = @Model.mark;
 }
 
 <h2>输入或更新玩家成绩</h2>
 
 <form method="post" action="/Game/AddOrUpdate">
+
     <div>
-        <label for="PlayerName">玩家名:</label>
-        <input type="text" id="PlayerName" name="PlayerName" value="@player.PlayerName" required />
+        <label for="playerName">玩家名:</label>
+        <input list="options" id="playerName" name="playerName"  required />
+        <datalist id="options">
+            @foreach (var p in Model.players)
+            {
+                <option value="@p.PlayerName"></option>
+            }
+        </datalist>
+
+
     </div>
 
     <div>
-        <label for="TrackName">赛道名:</label>
-        <select id="TrackName" name="TrackName">
-            @foreach (var track in Tracks)
+        <label for="trackId">赛道名:</label>
+        <select id="trackId" name="trackId">
+            @foreach (var t in Tracks)
             {
-                @if (track.TrackName == player.TrackName)
+                @if (t.TrackName == "1")
                 {
-                    <option value="@track" selected>@track</option>
+                    <option value="@t.Id" selected>@t</option>
                 }
                 else
                 {
-                    <option value="@track">@track.TrackName</option>
+                    <option value="@t.Id">@t.TrackName</option>
                 }
 
             }
@@ -32,15 +42,15 @@
     </div>
 
     <div>
-        <label for="Score">成绩:</label>
-        <input type="text" id="Score" name="Score" placeholder="mm:ss:SSS" maxlength="8" @* value="@player.Score" *@ required />
+        <label for="score">成绩:</label>
+        <input type="text" id="score" name="score" placeholder="mm:ss:SSS" maxlength="8" required />
 
     </div>
 
     <button type="submit">保存</button>
 </form>
 <script>
-    document.getElementById('Score').addEventListener('input', function(event) {
+    document.getElementById('score').addEventListener('input', function (event) {
         let value = event.target.value.replace(/[^0-9]/g, ''); // 移除所有非数字字符
         if (value.length <= 0) {
             // 小于等于2位数，格式为 H

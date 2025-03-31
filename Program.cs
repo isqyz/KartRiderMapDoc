@@ -14,7 +14,7 @@ namespace KartRiderMapDoc
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=users.db"));
+            options.UseSqlite("Data Source=users.db"));
 
 
 

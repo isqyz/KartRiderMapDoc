@@ -1,14 +1,17 @@
-﻿namespace KartRiderMapDoc.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace KartRiderMapDoc.Models
 {
     public class Track
     {
+        [Key]
         public int Id { get; set; }
         public string? Lev { get; set; }
         public int Star { get; set; }
-        public string? TrackName { get; set; }
+        public string TrackName { get; set; } = "";
 
         // 导航属性
-        public ICollection<TrackScoreMark>? TrackScores { get; set; }
+        public ICollection<TrackScoreMark> TrackScores { get; set; } = [];
         public ICollection<PlayerTrackAchievement>? PlayerTrackAchievements { get; set; }
     }
 
