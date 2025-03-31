@@ -22,20 +22,20 @@ namespace KartRiderMapDoc
             {
 
             }
-            if (!context.Player.Any())
-            {
-                context.Player.AddRange
-                    (
-                    new Models.Player { Level = Models.ScoreLev.娱乐, PlayerName = "土炮", Score = 98.60 },
-                    new Models.Player
-                    {
-                        Level = Models.ScoreLev.一线,
-                        PlayerName = "富贵",
-                        Score = 91.60,
-                    }
-                );
-                context.SaveChanges();
-            }
+            //if (!context.Player.Any())
+            //{
+            //    context.Player.AddRange
+            //        (
+            //        new Models.Player { Level = Models.ScoreLev.娱乐, PlayerName = "土炮", Score = 98.60 },
+            //        new Models.Player
+            //        {
+            //            Level = Models.ScoreLev.一线,
+            //            PlayerName = "富贵",
+            //            Score = 91.60,
+            //        }
+            //    );
+            //    context.SaveChanges();
+            //}
         }
     }
 }
