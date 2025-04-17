@@ -4,6 +4,64 @@
     IEnumerable<Track> tracks = Model.Tracks;
 }
 
+<h2>玩家成绩统计</h2>
+
+<form method="get" action="@Url.Action("Index", "Game")">
+    <div class="track-checkboxes">
+        <h4>选择赛道</h4>
+        @foreach (var track in tracks)
+        {
+            <label>
+                @if (tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)))
+                {
+                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" checked />
+                }
+                else
+                {
+                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" />
+                }
+                @track.TrackName
+            </label>
+        }
+    </div>
+    <button type="submit">筛选</button>
+</form>
+
+@if (Model is null)
+{
+    <p>没有找到匹配的玩家数据。</p>
+}
+else
+{
+    <div class="table-wrapper">
+        @foreach (var track in @Model.Tracks)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>玩家名</th>
+                        <th>@track.TrackName</th>
+                        <th>成绩</th>
+                        <th>等级</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ts in track.TrackScores)
+                    {
+                        <tr>
+                            <td>@ts.Player?.PlayerName</td>
+                            <td>@ts.CreatedAt.ToString("yy年M月d日 HH:mm")</td>
+                            <td>@ts.ReadScore()</td>
+                            <td>@ts.Get()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}
+
+
 <style>
     body {
         font-family: "Segoe UI", sans-serif;
@@ -72,60 +130,3 @@
             background-color: #005a99;
         }
 </style>
-
-<h2>玩家成绩统计</h2>
-
-<form method="get" action="@Url.Action("Index", "Game")">
-    <div class="track-checkboxes">
-        <h4>选择赛道</h4>
-        @foreach (var track in tracks)
-        {
-            <label>
-                @if (tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)))
-                {
-                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" checked />
-                }
-                else
-                {
-                    <input type="checkbox" name="selectedTracks" value="@track.TrackName" />
-                }
-                @track.TrackName
-            </label>
-        }
-    </div>
-    <button type="submit">筛选</button>
-</form>
-
-@if (Model is null)
-{
-    <p>没有找到匹配的玩家数据。</p>
-}
-else
-{
-    <div class="table-wrapper">
-        @foreach (var track in @Model.Tracks)
-        {
-            <table>
-                <thead>
-                    <tr>
-                        <th>玩家名</th>
-                        <th>@track.TrackName</th>
-                        <th>成绩</th>
-                        <th>等级</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ts in track.TrackScores)
-                    {
-                        <tr>
-                            <td>@ts.Player?.PlayerName</td>
-                            <td>@ts.CreatedAt.ToString("yy年M月d日 HH:mm")</td>
-                            <td>@ts.ReadScore()</td>
-                            <td>@ts.Get()</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-}
