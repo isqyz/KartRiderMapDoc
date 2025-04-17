@@ -4,15 +4,84 @@
     IEnumerable<Track> tracks = Model.Tracks;
 }
 
+<style>
+    body {
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    .track-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .table-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+        min-width: 300px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f5f5f5;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #fafafa;
+    }
+
+    button {
+        padding: 6px 12px;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #005a99;
+        }
+</style>
+
 <h2>玩家成绩统计</h2>
 
 <form method="get" action="@Url.Action("Index", "Game")">
-    <div>
+    <div class="track-checkboxes">
         <h4>选择赛道</h4>
         @foreach (var track in tracks)
         {
             <label>
-                @if(tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)))
+                @if (tracks != null && tracks.Any(val => val.TrackName.Contains(track.TrackName)))
                 {
                     <input type="checkbox" name="selectedTracks" value="@track.TrackName" checked />
                 }
@@ -33,11 +102,10 @@
 }
 else
 {
-    <div style="display: flex; gap: 10px;">
-
+    <div class="table-wrapper">
         @foreach (var track in @Model.Tracks)
         {
-            <table border="1" cellpadding="5" cellspacing="0">
+            <table>
                 <thead>
                     <tr>
                         <th>玩家名</th>
