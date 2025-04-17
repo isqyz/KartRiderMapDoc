@@ -13,7 +13,7 @@ namespace KartRiderMapDoc.Models
     }
     public enum ScoreLev
     {
-        None,
+        墙主,
         主力,
         一线,
         二线,

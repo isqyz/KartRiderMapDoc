@@ -15,6 +15,8 @@ namespace KartRiderMapDoc.Models
 
         public double Score { get; set; }  // 选手在该赛道的分数
 
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
         public string ReadScore()
         {
             TimeSpan ts = TimeSpan.FromSeconds(Score);
@@ -27,6 +29,7 @@ namespace KartRiderMapDoc.Models
 
         public void WriteScore(string score)
         {
+            Score = 0;
             var spl = score.Split(':');
             if (spl.Length == 3)
             {
@@ -40,7 +43,7 @@ namespace KartRiderMapDoc.Models
         public Track? Track { get; set; }
         public ScoreLev Get()
         {
-            ScoreLev scoreLev = ScoreLev.None;
+            ScoreLev scoreLev = ScoreLev.墙主;
             //if (ScoreMark is not null)
             //    foreach (var item in ScoreMark)
             //    {

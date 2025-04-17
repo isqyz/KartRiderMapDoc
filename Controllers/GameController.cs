@@ -28,26 +28,15 @@ namespace KartRiderMapDoc.Controllers
             //    .Where(players => selectedTracks.Count == 0 || selectedTracks.Contains(players.TrackName??""))
             //    .OrderByDescending(players => players.Score);
             ShowViewModel showView = new();
-
             var tracks = gameService.GetAllTrack();
-            List<ShowViewModel> showViewModel = [];
             foreach (var t in tracks)
             {
-                if(t.TrackScores is not null)
-                foreach(var mark in t.TrackScores)
-                {
-                    if(mark.Track is not null && mark.Player is not null)
-                        if (selectedTracks.Count == 0 || selectedTracks.Contains(mark.Track.TrackName))
-                        {
-                                var mod = new ShowViewModel() { TrackName = t.TrackName };
-                                mod.PlayerNames.Add(mark.Player.PlayerName);
-                                mod.TrackName = t.TrackName;
-                                mod.Scores.Add(mark.ReadScore());
-                                //mod.Levs.Add(mark.Score);
-                                showViewModel.Add(mod);
-                        }
-                }
-
+                    if(t is not null && t.TrackScores is not null)
+                        if (t.TrackScores is not null)
+                            if (selectedTracks.Count == 0 || selectedTracks.Contains(t.TrackName))
+                            {
+                                showView.Tracks = showView.Tracks.Append(t);
+                            }
             }
             return View(showView);
         }

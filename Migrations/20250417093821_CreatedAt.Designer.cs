@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartRiderMapDoc.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250309175921_InitialCreat2")]
-    partial class InitialCreat2
+    [Migration("20250417093821_CreatedAt")]
+    partial class CreatedAt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace KartRiderMapDoc.Migrations
 
                     b.HasKey("AchievementId");
 
-                    b.ToTable("Achievement");
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("KartRiderMapDoc.Models.Player", b =>
@@ -47,17 +47,15 @@ namespace KartRiderMapDoc.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PlayerName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Score")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("TrackName")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("PlayerId");
 
-                    b.ToTable("PlayerScores");
+                    b.ToTable("Player");
                 });
 
             modelBuilder.Entity("KartRiderMapDoc.Models.PlayerTrackAchievement", b =>
@@ -89,7 +87,7 @@ namespace KartRiderMapDoc.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("PlayerTrackAchievement");
+                    b.ToTable("PlayerTrackAchievements");
                 });
 
             modelBuilder.Entity("KartRiderMapDoc.Models.Track", b =>
@@ -105,6 +103,7 @@ namespace KartRiderMapDoc.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("TrackName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -114,26 +113,25 @@ namespace KartRiderMapDoc.Migrations
 
             modelBuilder.Entity("KartRiderMapDoc.Models.TrackScoreMark", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("PlayerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("TrackId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Score")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("TrackId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
+                    b.HasKey("PlayerId", "TrackId");
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("TrackScoreMark");
+                    b.ToTable("TrackScoreMarks");
                 });
 
             modelBuilder.Entity("KartRiderMapDoc.Models.PlayerTrackAchievement", b =>

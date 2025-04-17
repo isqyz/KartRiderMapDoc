@@ -1,5 +1,6 @@
 ﻿using KartRiderMapDoc.Db;
 using KartRiderMapDoc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace KartRiderMapDoc.Services
 {
@@ -9,12 +10,10 @@ namespace KartRiderMapDoc.Services
         private readonly ILogger<GameService> _logger = logger;
         internal IEnumerable<Track> GetAllTrack()
         {
-            var tracks = _context.Tracks;
-            if (tracks != null)
-            {
-                context.Entry(tracks).Reference(ts => ts.Local).Load(); // 手动加载
-            }
-            return _context.Tracks;
+            return  _context.Tracks
+                .Include(t => t.TrackScores.OrderBy(ts=>ts.Score))
+                    .ThenInclude(p=>p.Player)
+                    .Include(t=>t.PlayerTrackAchievements).OrderBy(t => t.Star);
         }
         internal IEnumerable<Player> GetAllPlayer()
         {
@@ -76,7 +75,16 @@ namespace KartRiderMapDoc.Services
                 PlayerId = player.PlayerId,
             };
             mark.WriteScore(score);
-            _context.TrackScoreMarks.Add(mark);
+            var existing = _context.TrackScoreMarks.FirstOrDefault(tsm => tsm.PlayerId == mark.PlayerId && tsm.TrackId == mark.TrackId);
+            if (existing == null)
+            {
+                _context.TrackScoreMarks.Add(mark);
+            }
+            else
+            {
+                existing.Score = mark.Score;
+                existing.CreatedAt = DateTime.Now;
+            }
             _context.SaveChanges();
         }
     }

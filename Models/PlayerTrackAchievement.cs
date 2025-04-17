@@ -23,6 +23,5 @@ namespace KartRiderMapDoc.Models
         public Player? Player { get; set; }
         public Track? Track { get; set; }
         public Achievement? Achievement { get; set; }
-
     }
 }

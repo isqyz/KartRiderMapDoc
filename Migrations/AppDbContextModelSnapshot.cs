@@ -44,13 +44,11 @@ namespace KartRiderMapDoc.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PlayerName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Score")
                         .HasColumnType("REAL");
-
-                    b.Property<string>("TrackName")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("PlayerId");
 
@@ -102,6 +100,7 @@ namespace KartRiderMapDoc.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("TrackName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -111,22 +110,21 @@ namespace KartRiderMapDoc.Migrations
 
             modelBuilder.Entity("KartRiderMapDoc.Models.TrackScoreMark", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("PlayerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("TrackId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Score")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("TrackId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
+                    b.HasKey("PlayerId", "TrackId");
 
                     b.HasIndex("TrackId");
 
