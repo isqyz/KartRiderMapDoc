@@ -34,6 +34,28 @@ namespace KartRiderMapDoc.Migrations
                     b.ToTable("Achievements");
                 });
 
+            modelBuilder.Entity("KartRiderMapDoc.Models.GradeLevelEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("TrackId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrackId");
+
+                    b.ToTable("GradeLevelEntries");
+                });
+
             modelBuilder.Entity("KartRiderMapDoc.Models.Player", b =>
                 {
                     b.Property<int>("PlayerId")
@@ -131,6 +153,17 @@ namespace KartRiderMapDoc.Migrations
                     b.ToTable("TrackScoreMarks");
                 });
 
+            modelBuilder.Entity("KartRiderMapDoc.Models.GradeLevelEntry", b =>
+                {
+                    b.HasOne("KartRiderMapDoc.Models.Track", "Track")
+                        .WithMany("GradeLevelEntries")
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Track");
+                });
+
             modelBuilder.Entity("KartRiderMapDoc.Models.PlayerTrackAchievement", b =>
                 {
                     b.HasOne("KartRiderMapDoc.Models.Achievement", "Achievement")
@@ -191,6 +224,8 @@ namespace KartRiderMapDoc.Migrations
 
             modelBuilder.Entity("KartRiderMapDoc.Models.Track", b =>
                 {
+                    b.Navigation("GradeLevelEntries");
+
                     b.Navigation("PlayerTrackAchievements");
 
                     b.Navigation("TrackScores");

@@ -4,14 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KartRiderMapDoc.Controllers
 {
-    public class GameController : Controller
+    public class GameController(GameService gameService) : Controller
     {
-        private readonly GameService gameService;
-
-        public GameController(GameService gameService)
-        {
-            this.gameService = gameService;
-        }
 
         //public IActionResult Index()
         //{
@@ -81,9 +75,28 @@ namespace KartRiderMapDoc.Controllers
             if (ModelState.IsValid)
             {
                 gameService.AddTrack(track);
-                return RedirectToAction("Index"); 
             }
-            return View(track);
+            //return RedirectToAction("AddTrack");
+            return View("AddTrack",(gameService.GetAllTrack(), new Track()));
+        }
+        [HttpPost]
+        public IActionResult EditTrack([FromForm] int Id)
+        {
+            if (ModelState.IsValid)
+            {
+                var all = gameService.GetAllTrack();
+                var track = all.FirstOrDefault(val => val.Id == Id);
+                if(track is not null)
+                {
+                     return View("AddTrack", (all, track));
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult DelTrack(int id)
+        {
+            return RedirectToAction("Index");
         }
     }
 }

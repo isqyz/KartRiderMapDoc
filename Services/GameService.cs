@@ -23,30 +23,14 @@ namespace KartRiderMapDoc.Services
         {
             return _context.TrackScoreMarks; 
         }
-        internal int AddPlayer(string playerName, Player player)
-        {
-            //var existingPlayer = GetAllPlayer().FirstOrDefault(p => p.PlayerName == player.PlayerName);
-            //if (existingPlayer != null)
-            //{
-            //    // 更新成绩
-            //    existingPlayer.Score = player.Score;
-            //}
-            //else
-            //{
-            //    // 添加新玩家成绩
-            //    _context.Player.Add(player);
-            //}
-            return 1;// _context.SaveChanges();
-            //dotnet ef database update
-                //dotnet ef migrations add InitialCreated
-        }
 
         internal void AddTrack(Track track)
         {
             var existingTrack = GetAllTrack().FirstOrDefault(t => t.TrackName == track.TrackName);
             if (existingTrack != null)
             {
-                existingTrack = track;
+                track.Id = existingTrack.Id;
+                _context.Entry(existingTrack).CurrentValues.SetValues(track);
             }
             else
             {

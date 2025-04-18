@@ -25,6 +25,7 @@
         }
     </div>
     <button type="submit">筛选</button>
+
 </form>
 
 @if (Model is null)
@@ -33,7 +34,7 @@
 }
 else
 {
-    <div class="table-wrapper">
+    <div id="tableContainer" class="table-wrapper">
         @foreach (var track in @Model.Tracks)
         {
             <table>
@@ -60,8 +61,25 @@ else
         }
     </div>
 }
+<script src="/js/html2canvas.min.js"></script>
+<script>
 
 
+                            // 获取表格
+        var tableElement = document.querySelector(".table-wrapper");
+    // 使用html2canvas将表格转换为画布
+    html2canvas(tableElement).then(function (canvas) {
+        var imageDataURL = canvas.toDataURL("image/png");
+
+        var downloadLink = document.createElement("a");
+        downloadLink.href = imageDataURL;
+        downloadLink.download = "table_screenshot.png";
+        downloadLink.innerHTML = "保存为图片";
+        // 下载链接
+        document.body.appendChild(downloadLink);
+    });
+    
+</script>
 <style>
     body {
         font-family: "Segoe UI", sans-serif;
