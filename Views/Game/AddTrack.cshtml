@@ -167,12 +167,12 @@
         </div>
         <div class="col-md-5">
             <table>
-                @foreach (var item in track.GradeLevelEntries)
+                @foreach (var item in track.ReadGradeLevel())
                 {
                     <tr class="form-group">
-                        <td><label for="@item.Level">@item.Level</label></td>
+                        <td><label for="ScoreLev">@item.Key</label></td>
                         <td>
-                            <input class="form-control score-input" type="text" id="@item.Level" name="GradeLevelEntries[0]" placeholder="mm:ss:SSS" maxlength="8" @(item.Score != 0 ? $"value=\"{item.Score}\"" : "") />
+                            <input class="form-control score-input" type="text" id="@item.Key" name="GradeLevelEntries[0]" placeholder="mm:ss:SSS" maxlength="8" @(item.Value != 0 ? $"value=\"{item.Value}\"" : "") />
                         </td>
                     </tr>
                 }

@@ -12,7 +12,7 @@ namespace KartRiderMapDoc.Models
 
         public string GradeLevelJsonStr { get; set; } = System.Text.Json.JsonSerializer.Serialize(Enum.GetValues<ScoreLev>().ToDictionary(level => level, level => 0.0));
 
-        public Dictionary<ScoreLev, double>? ReadGradeLevel()
+        public Dictionary<ScoreLev, double> ReadGradeLevel()
         {
             if (GradeLevelJsonStr != null)
             {
@@ -22,7 +22,7 @@ namespace KartRiderMapDoc.Models
                     return dic;
                 }
             }
-            return null;
+            return Enum.GetValues<ScoreLev>().ToDictionary(level => level, level => 0.0);
         }
         public void WriteGradeLevel(ref Dictionary<ScoreLev, double> keys)
         {
