@@ -20,4 +20,11 @@ namespace KartRiderMapDoc.Models
         娱乐,
         墙主,
     }
+    public enum TrackLev
+    {
+        R,
+        L3,
+        L2,
+        L1
+    }
 }

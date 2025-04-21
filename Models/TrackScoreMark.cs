@@ -41,17 +41,18 @@ namespace KartRiderMapDoc.Models
         // 导航属性
         public Player? Player { get; set; }
         public Track? Track { get; set; }
-        public ScoreLev Get()
+        public ScoreLev GetLev()
         {
             ScoreLev scoreLev = ScoreLev.墙主;
-            //if (ScoreMark is not null)
-            //    foreach (var item in ScoreMark)
-            //    {
-            //        if (Score <= item.Value)
-            //        {
-            //            scoreLev = item.Key;
-            //        }
-            //    }
+            if (Track is not null)
+                foreach (var item in Track.ReadGradeLevel())
+                {
+                    if (Score <= Track.ScoreToDouble(item.Value))
+                    {
+                        scoreLev = item.Key;
+                        break;
+                    }
+                }
             return scoreLev;
         }
     }

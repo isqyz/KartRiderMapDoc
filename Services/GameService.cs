@@ -71,5 +71,15 @@ namespace KartRiderMapDoc.Services
             }
             _context.SaveChanges();
         }
+
+        internal void DelTrack(int id)
+        {
+            var track = _context.Tracks.FirstOrDefault(val => val.Id == id);
+            if (track is not null)
+            {
+                _context.Tracks.Remove(track);
+                _context.SaveChanges();
+            }
+        }
     }
 }

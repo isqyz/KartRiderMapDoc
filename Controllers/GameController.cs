@@ -70,14 +70,22 @@ namespace KartRiderMapDoc.Controllers
         // 处理添加赛道的表单提交
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddTrack(Track track)
+        public IActionResult AddTrack(Track track, params string[] parm)
         {
             if (ModelState.IsValid)
             {
+                for (int i = 0; i < parm.Length; i++)
+                {
+                    string? p = parm[i];
+                    if (p is not null)
+                    {
+                        track.AppendGradeLevel((ScoreLev)i, p);
+                    }
+                }
                 gameService.AddTrack(track);
             }
             //return RedirectToAction("AddTrack");
-            return View("AddTrack",(gameService.GetAllTrack(), new Track()));
+            return View("AddTrack",(gameService.GetAllTrack(), track));
         }
         [HttpPost]
         public IActionResult EditTrack([FromForm] int Id)
@@ -96,6 +104,7 @@ namespace KartRiderMapDoc.Controllers
         [HttpPost]
         public IActionResult DelTrack(int id)
         {
+            gameService.DelTrack(id);
             return RedirectToAction("Index");
         }
     }

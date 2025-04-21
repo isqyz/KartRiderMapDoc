@@ -51,9 +51,10 @@ else
                     {
                         <tr>
                             <td>@ts.Player?.PlayerName</td>
-                            <td>@ts.CreatedAt.ToString("yy年M月d日 HH:mm")</td>
+                            <td>@ts.CreatedAt.ToString("M月d日")</td>
+                            @* <td>@ts.CreatedAt.ToString("yy年M月d日 HH:mm")</td> *@
                             <td>@ts.ReadScore()</td>
-                            <td>@ts.Get()</td>
+                            <td>@ts.GetLev()</td>
                         </tr>
                     }
                 </tbody>
