@@ -1,4 +1,4 @@
-using KartRiderMapDoc.Db;
+﻿using KartRiderMapDoc.Db;
 using KartRiderMapDoc.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +13,20 @@ namespace KartRiderMapDoc
             builder.Services.AddControllers();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite("Data Source=users.db"));
 
 
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                db.Database.Migrate(); // ⬅️ 自动执行迁移
+            }
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
