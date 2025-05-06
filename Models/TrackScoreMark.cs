@@ -49,7 +49,8 @@ namespace KartRiderMapDoc.Models
                 {
                     if (Score <= Track.ScoreToDouble(item.Value))
                     {
-                        scoreLev = item.Key;
+                        scoreLev = item.Key-1;
+                        if (scoreLev < 0) { scoreLev = 0;}
                         break;
                     }
                 }
