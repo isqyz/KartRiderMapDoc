@@ -13,6 +13,10 @@ namespace KartRiderMapDoc.Models
     }
     public enum ScoreLev
     {
+        国服,
+        顶尖职业,
+        职业,
+        强主,
         主力,
         一线,
         二线,

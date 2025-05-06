@@ -16,6 +16,7 @@ namespace KartRiderMapDoc
 
 
 
+
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite("Data Source=users.db"));
 
@@ -46,6 +47,7 @@ namespace KartRiderMapDoc
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             SeedData.Initialize(app.Services);
+            app.Urls.Add($"http://0.0.0.0:8477");
             app.Run();
         }
     }

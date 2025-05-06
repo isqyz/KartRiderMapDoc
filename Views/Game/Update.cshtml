@@ -1,9 +1,12 @@
 ﻿@model dynamic
+@using System.Text.Json
 @{
     ViewBag.Title = "玩家成绩管理";
     var Tracks = @Model.tracks;
     Player player = @Model.player;
     TrackScoreMark mark = @Model.mark;
+    var playerList = (IEnumerable<dynamic>)Model.players;
+    var playerNamesJson = JsonSerializer.Serialize(playerList.Select(p => (string)p.PlayerName));
 }
 
 <style>
@@ -26,9 +29,10 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
 
-        form > div {
-            margin-bottom: 15px;
-        }
+    form > div {
+        margin-bottom: 15px;
+        position: relative;
+    }
 
     label {
         display: block;
@@ -57,8 +61,30 @@
         cursor: pointer;
     }
 
-        button:hover {
-            background-color: #005fa3;
+    button:hover {
+        background-color: #005fa3;
+    }
+
+    .autocomplete-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        z-index: 9999;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .autocomplete-suggestion {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+        .autocomplete-suggestion:hover {
+            background-color: #eee;
         }
 </style>
 
@@ -67,13 +93,8 @@
 <form method="post" action="/Game/AddOrUpdate">
     <div>
         <label for="playerName">玩家名:</label>
-        <input list="options" id="playerName" name="playerName" required />
-        <datalist id="options">
-            @foreach (var p in Model.players)
-            {
-                <option value="@p.PlayerName"></option>
-            }
-        </datalist>
+        <input type="text" id="playerName" name="playerName" autocomplete="off" required />
+        <div id="suggestions" class="autocomplete-list"></div>
     </div>
 
     <div>
@@ -102,6 +123,7 @@
 </form>
 
 <script>
+    // 成绩输入格式化
     document.getElementById('score').addEventListener('input', function (event) {
         let value = event.target.value.replace(/[^0-9]/g, '');
         if (value.length <= 0) {
@@ -114,5 +136,46 @@
             value = value.substring(0, 7);
         }
         event.target.value = value;
+    });
+
+    // 自动补全
+    const players = @Html.Raw(playerNamesJson);
+    const input = document.getElementById('playerName');
+    const suggestionBox = document.getElementById('suggestions');
+
+    input.addEventListener('input', function () {
+        const value = this.value.toLowerCase().trim();
+        suggestionBox.innerHTML = '';
+
+        if (!value) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        const filtered = players.filter(name => name.toLowerCase().includes(value)).slice(0, 10);
+
+        if (filtered.length > 0) {
+            filtered.forEach(name => {
+                const div = document.createElement('div');
+                div.textContent = name;
+                div.classList.add('autocomplete-suggestion');
+                div.onclick = () => {
+                    input.value = name;
+                    suggestionBox.innerHTML = '';
+                    suggestionBox.style.display = 'none';
+                };
+                suggestionBox.appendChild(div);
+            });
+            suggestionBox.style.display = 'block';
+        } else {
+            suggestionBox.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('#playerName') && !e.target.closest('#suggestions')) {
+            suggestionBox.innerHTML = '';
+            suggestionBox.style.display = 'none';
+        }
     });
 </script>
