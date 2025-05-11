@@ -5,6 +5,7 @@
 }
 
 <h2>玩家成绩统计</h2>
+<button id="saveImageBtn" type="button">保存为图片</button>
 
 <form method="get" action="@Url.Action("Index", "Game")">
     <div class="track-checkboxes">
@@ -64,23 +65,22 @@ else
 }
 <script src="/js/html2canvas.min.js"></script>
 <script>
-
-
-    // 获取表格
+    document.getElementById("saveImageBtn").addEventListener("click", function () {
         var tableElement = document.querySelector(".table-wrapper");
-    // 使用html2canvas将表格转换为画布
-    html2canvas(tableElement).then(function (canvas) {
-        var imageDataURL = canvas.toDataURL("image/png");
 
-        var downloadLink = document.createElement("a");
-        downloadLink.href = imageDataURL;
-        downloadLink.download = "table_screenshot.png";
-        downloadLink.innerHTML = "保存为图片";
-        // 下载链接
-        document.body.appendChild(downloadLink);
+        html2canvas(tableElement).then(function (canvas) {
+            var imageDataURL = canvas.toDataURL("image/png");
+
+            var downloadLink = document.createElement("a");
+            downloadLink.href = imageDataURL;
+            downloadLink.download = "table_screenshot.png";
+
+            // 模拟点击下载
+            downloadLink.click();
+        });
     });
-    
 </script>
+
 <style>
     body {
         font-family: "Segoe UI", sans-serif;
