@@ -5,7 +5,6 @@
 }
 
 <h2>玩家成绩统计</h2>
-<button id="saveImageBtn" type="button">保存为图片</button>
 
 <form method="get" action="@Url.Action("Index", "Game")">
     <div class="track-checkboxes">
@@ -28,7 +27,7 @@
     <button type="submit">筛选</button>
 
 </form>
-
+<button id="saveImageBtn" type="button">保存为图片</button>
 @if (Model is null)
 {
     <p>没有找到匹配的玩家数据。</p>
