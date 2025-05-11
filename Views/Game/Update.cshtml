@@ -1,12 +1,16 @@
 ﻿@model dynamic
 @using System.Text.Json
+@using System.Collections.Generic
+
 @{
     ViewBag.Title = "玩家成绩管理";
-    var Tracks = @Model.tracks;
-    Player player = @Model.player;
-    TrackScoreMark mark = @Model.mark;
+    var Tracks = Model.tracks;
+    Player player = Model.player;
+    TrackScoreMark mark = Model.mark;
     var playerList = (IEnumerable<dynamic>)Model.players;
-    var playerNamesJson = JsonSerializer.Serialize(playerList.Select(p => (string)p.PlayerName));
+    var playerNamesJson = JsonSerializer.Serialize(
+        playerList.Select(p => (string)p.PlayerName)
+    );
 }
 
 <style>
